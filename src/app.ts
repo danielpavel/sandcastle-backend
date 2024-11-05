@@ -4,6 +4,7 @@ import helmet from "helmet";
 import rateLimiter from "./middleware/rateLimiter";
 import { marketplaceAdminSign } from "./services/admin";
 import bodyParser from "body-parser";
+import morganMiddleware from "./middleware/morgan";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(rateLimiter);
+app.use(morganMiddleware);
 
 // Routes
 app.get("/health", (req, res) => {
