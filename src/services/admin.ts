@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { Transaction } from "@solana/web3.js";
 import { getKeypairFromEnvironment } from "@solana-developers/helpers";
+import { StatusCodes } from "http-status-codes";
 
 const ADMIN_KEYPAIR = getKeypairFromEnvironment("ADMIN_PRIVATE_KEY");
 
@@ -11,7 +12,7 @@ export async function marketplaceAdminSign(req: Request, res: Response) {
 
     // Verify user's request
     if (!isValidRequest(userPubkey)) {
-      return res.status(400).send("Invalid request");
+      return res.status(StatusCodes.BAD_REQUEST).send("Invalid request");
     }
 
     // TOOD - Check Redis for rate limiting per user
@@ -28,7 +29,7 @@ export async function marketplaceAdminSign(req: Request, res: Response) {
 
     // Verify transaction contents
     if (!isValidTransaction(transaction)) {
-      return res.status(400).send("Invalid transaction");
+      return res.status(StatusCodes.BAD_REQUEST).send("Invalid transaction");
     }
 
     // Sign with admin key
@@ -40,7 +41,7 @@ export async function marketplaceAdminSign(req: Request, res: Response) {
     res.json({ signedTx });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal server error");
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Internal server error");
   }
 }
 
