@@ -5,8 +5,7 @@ import rateLimiter from "./middleware/rateLimiter";
 import { marketplaceAdminSign } from "./services/admin";
 import bodyParser from "body-parser";
 import morganMiddleware from "./middleware/morgan";
-import { env } from "@/common/utils/envConfig";
-import apiKeyCheck from "./middleware/apiKey";
+import { env } from "./common/utils/envConfig";
 import { StatusCodes } from "http-status-codes";
 
 const app = express();
@@ -27,8 +26,6 @@ app.get("/health", (req, res) => {
 
 // Admin Sign Transaction
 app.post("/api/sign-transaction", async (req, res, next) => {
-  // Check API key
-  apiKeyCheck(req, res, next);
   marketplaceAdminSign(req, res);
 });
 
